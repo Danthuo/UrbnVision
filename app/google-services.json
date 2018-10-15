@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "159698950500",
+    "firebase_url": "https://urbn-vision.firebaseio.com",
+    "project_id": "urbn-vision",
+    "storage_bucket": "urbn-vision.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:159698950500:android:a7ecb67bc5bb4651",
+        "android_client_info": {
+          "package_name": "bbitb.com.urbnvision"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "159698950500-out53khekuv583recbib8g3a72kuckan.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "159698950500-out53khekuv583recbib8g3a72kuckan.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAeG7YNe_qIAnb_sRdpHHNq7r77Ygmjvzc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

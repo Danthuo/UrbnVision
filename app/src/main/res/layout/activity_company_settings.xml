@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="bbitb.com.urbnvision.CompanySettingsActivity">
+
+    <RelativeLayout
+        android:id="@+id/relay2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/grad"
+        android:paddingBottom="20dp">
+
+        <RelativeLayout
+            android:id="@+id/imgUser"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/circle_border">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/imageView_display"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:src="@drawable/ic_account"
+                android:background="@drawable/circle"
+                android:layout_margin="9dp"
+                android:padding="3dp"
+                />
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/textView_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/imgUser"
+            android:layout_centerHorizontal="true"
+            android:text="Sample Company"
+            android:textSize="22sp"
+            android:textColor="@color/white"
+            android:fontFamily="@font/aileron_light"
+            android:layout_marginTop="15sp"/>
+
+        <TextView
+            android:id="@+id/edit_pic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textView_name"
+            android:layout_centerHorizontal="true"
+            android:text="Change photo"
+            android:textSize="12sp"
+            android:textColor="@color/address"
+            android:textAllCaps="true"
+            android:fontFamily="@font/aileron_light"
+            android:layout_marginTop="5sp"/>
+
+    </RelativeLayout>
+
+
+
+    <ScrollView
+    android:id="@+id/company_details"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_below="@+id/relay2">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/linLay1">
+
+    <LinearLayout
+        android:id="@+id/form"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:orientation="vertical"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="15dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/headings"
+                android:textSize="13sp"
+                android:text="Account Email"
+                android:fontFamily="@font/aileron_light"/>
+            <EditText
+                android:id="@+id/acc_email"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#000000"
+                android:text="n/a"
+                android:textSize="18sp"
+                android:fontFamily="@font/aileron_ultra_light"
+                android:editable="false"
+                />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="15dp"
+                android:background="@color/gray"/>
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="15dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/headings"
+                android:textSize="13sp"
+                android:text="Account Username"
+                android:fontFamily="@font/aileron_light"/>
+            <EditText
+                android:id="@+id/acc_username"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#000000"
+                android:text="n/a"
+                android:textSize="18sp"
+                android:fontFamily="@font/aileron_ultra_light"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="15dp"
+                android:background="@color/gray"/>
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="15dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/headings"
+                android:textSize="13sp"
+                android:text="Company Name"
+                android:fontFamily="@font/aileron_light"/>
+            <EditText
+                android:id="@+id/acc_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#000000"
+                android:text="n/a"
+                android:textSize="18sp"
+                android:fontFamily="@font/aileron_ultra_light"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="15dp"
+                android:background="@color/gray"/>
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="15dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/headings"
+                android:textSize="13sp"
+                android:text="Company Description"
+                android:fontFamily="@font/aileron_light"/>
+            <EditText
+                android:id="@+id/acc_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#000000"
+                android:text="This section says something about the company"
+                android:textSize="18sp"
+                android:fontFamily="@font/aileron_ultra_light"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="15dp"
+                android:background="@color/gray"/>
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="15dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/headings"
+                android:textSize="13sp"
+                android:text="Company Website"
+                android:fontFamily="@font/aileron_light"/>
+            <EditText
+                android:id="@+id/acc_url"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#000000"
+                android:text="n/a"
+                android:textSize="18sp"
+                android:fontFamily="@font/aileron_ultra_light"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="15dp"
+                android:background="@color/gray"/>
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="15dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/headings"
+                android:textSize="13sp"
+                android:text="Company Phone"
+                android:fontFamily="@font/aileron_light"/>
+            <EditText
+                android:id="@+id/acc_phone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#000000"
+                android:text="n/a"
+                android:textSize="18sp"
+                android:fontFamily="@font/aileron_ultra_light"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="15dp"
+                android:background="@color/gray"/>
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/final_ll"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="15dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/headings"
+                android:textSize="13sp"
+                android:text="Current Location"
+                android:fontFamily="@font/aileron_light"/>
+            <TextView
+                android:id="@+id/acc_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#000000"
+                android:text="n/a"
+                android:textSize="18sp"
+                android:fontFamily="@font/aileron_ultra_light"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="15dp"
+                android:background="@color/gray"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/form"
+                android:layout_margin="15dp"
+                >
+
+                <Button
+                    android:layout_width="150dp"
+                    android:layout_height="35dp"
+                    android:layout_marginTop="30dp"
+                    android:background="@drawable/button_style_signin"
+                    android:id="@+id/locationChange"
+                    android:text="Change Location"
+                    android:textSize="12sp"
+                    android:textColor="@color/white"
+                    android:fontFamily="@font/aileron_light"
+                    />
+
+                <Button
+                    android:layout_width="80dp"
+                    android:layout_height="35dp"
+                    android:textSize="12sp"
+                    android:textColor="#fff"
+                    android:text="Save"
+                    android:fontFamily="@font/aileron_light"
+                    android:id="@+id/btnUpdateProfile"
+                    android:layout_toRightOf="@+id/locationChange"
+                    android:layout_alignParentRight="true"
+                    android:background="@drawable/button_style_red"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginLeft="30dp"
+                    />
+
+            </RelativeLayout>
+
+
+
+</RelativeLayout>
+</ScrollView>
+    </RelativeLayout>

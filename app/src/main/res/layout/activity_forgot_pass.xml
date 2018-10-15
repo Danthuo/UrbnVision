@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/signUpForm"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="15dp"
+    >
+
+    <ProgressBar
+        android:id="@+id/signup_progress"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:visibility="gone" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:src="@mipmap/ic_launcher"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="50dp"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/logo"/>
+
+    <TextView
+        android:id="@+id/reset"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="14dp"
+        android:layout_centerHorizontal="true"
+        android:textSize="30sp"
+        android:textColor="@color/text_grey"
+        android:text="Reset Password"
+        android:fontFamily="@font/aileron_light"
+        android:layout_below="@id/logo" />
+
+
+    <android.support.v7.widget.AppCompatEditText
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:hint="Account Email"
+        android:id="@+id/acc_email"
+        android:layout_below="@+id/reset"
+        android:fontFamily="@font/aileron_light"
+        android:textColorHint="@color/text_grey"
+        />
+
+
+    <android.support.v7.widget.AppCompatButton
+        android:layout_width="120dp"
+        android:layout_height="35dp"
+        android:textSize="12sp"
+        android:textColor="#fff"
+        android:text="Send Reset Link"
+        android:fontFamily="@font/aileron_light"
+        android:id="@+id/btnSendLink"
+        android:layout_below="@+id/acc_email"
+        android:background="@drawable/button_style_red"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        />
+
+</RelativeLayout>

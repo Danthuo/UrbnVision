@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="200dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/card_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="5dp"
+        android:elevation="3dp"
+        app:cardCornerRadius="1dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/thumbnail"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:background="?android:attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:scaleType="fitXY"
+                android:layout_marginBottom="16dp"/>
+
+            <TextView
+                android:id="@+id/co_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/thumbnail"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:layout_marginBottom="8dp"
+                android:textColor="@color/text_grey"
+                android:textSize="15sp"
+                android:text="Company Name"/>
+
+            <TextView
+                android:id="@+id/co_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/co_name"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:layout_marginBottom="8dp"
+                android:textColor="@color/text_grey"
+                android:textSize="12sp"
+                android:text="Company Email"
+                android:visibility="invisible"/>
+
+            <TextView
+                android:id="@+id/co_desc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/co_email"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:layout_marginBottom="16dp"
+                android:textColor="@color/text_grey"
+                android:textSize="15sp"
+                android:text="Company Bio"/>
+            <ImageView
+                android:id="@+id/noti_status_image"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_below="@+id/co_desc"
+                android:paddingBottom="5dp"
+                android:src="@drawable/ic_notifications_black_24dp"
+                />
+            <TextView
+                android:id="@+id/noti_status"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:layout_below="@id/co_desc"
+                android:paddingBottom="5dp"
+                android:layout_marginBottom="8dp"
+                android:paddingLeft="10dp"
+                android:layout_marginLeft="25dp"
+                android:paddingRight="10dp"
+                android:textSize="12dp"
+                />
+            <ImageView
+                android:id="@+id/overflow"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/co_desc"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_more_vert_black_24dp"/>
+
+            <me.zhanghai.android.materialratingbar.MaterialRatingBar
+                android:id="@+id/total_star_rating"
+                style="@style/Widget.MaterialRatingBar.RatingBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="35dp"
+                android:isIndicator="true"
+                android:maxHeight="20dp"
+                android:minHeight="20dp"
+                android:numStars="5"
+                android:stepSize="0.25"
+                app:mrb_progressBackgroundTint="@color/colorPrimary"
+                app:mrb_progressTint="@color/colorPrimary"
+                app:mrb_secondaryProgressTint="@color/colorPrimary"
+                android:layout_below="@id/co_desc"/>
+
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
+</LinearLayout>

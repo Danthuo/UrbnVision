@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="250dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/grad">
+
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+        <android.support.v7.widget.CardView
+            android:id="@+id/pic"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="170dp"
+            app:cardCornerRadius="70dp">
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/profile_pic"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_person_black_24dp">
+
+            </de.hdodenhof.circleimageview.CircleImageView>
+
+        </android.support.v7.widget.CardView>
+
+
+        <TextView
+            android:id="@+id/username"
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            android:layout_below="@+id/pic"
+            android:layout_marginTop="10dp"
+            android:textAlignment="center"
+            android:layout_centerHorizontal="true"
+            android:textSize="25sp"
+            android:text="Username"
+            android:fontFamily="@font/aileron_light"/>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:orientation="horizontal"
+            android:layout_below="@+id/username">
+
+            <RelativeLayout
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginLeft="70dp">
+            <ImageView
+                android:id="@+id/editprofile_image"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/ic_edit_black_24dp"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp"
+                    android:layout_below="@+id/editprofile_image"
+                    android:textAlignment="center"
+                    android:text="Edit Bio"
+                    android:textSize="10sp"
+                    />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginLeft="25dp">
+                <ImageView
+                    android:id="@+id/locatecompanies_image"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_centerHorizontal="true"
+                    android:background="@drawable/ic_location_black_24dp"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp"
+                    android:layout_below="@+id/locatecompanies_image"
+                    android:textAlignment="center"
+                    android:text="Locate Companies"
+                    android:textSize="10sp"
+                    />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginLeft="25dp">
+                <ImageView
+                    android:id="@+id/more_image"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_centerHorizontal="true"
+                    android:background="@drawable/ic_more_vert_black_24dp"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp"
+                    android:layout_below="@+id/more_image"
+                    android:textAlignment="center"
+                    android:text="More"
+                    android:textSize="10sp"
+                    />
+            </RelativeLayout>
+
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
+</RelativeLayout>
+
