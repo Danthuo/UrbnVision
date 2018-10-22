@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,7 +49,6 @@ public class CompanyPostsActivity extends AppCompatActivity {
     protected FirebaseUser mFirebaseUser;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,9 +61,9 @@ public class CompanyPostsActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                PostCreateDialog dialog  = new PostCreateDialog();
+                PostCreateDialog dialog = new PostCreateDialog();
                 dialog.show(getFragmentManager(), null);
-                }
+            }
         });
         init();
 
@@ -82,7 +82,7 @@ public class CompanyPostsActivity extends AppCompatActivity {
         mPostAdapter.stopListening();
     }
 
-    private void init(){
+    private void init() {
         mPostRecycleView = findViewById(R.id.recyclerview_post);
         mPostRecycleView.hasFixedSize();
         mPostRecycleView.setLayoutManager(new LinearLayoutManager(this));
@@ -94,47 +94,59 @@ public class CompanyPostsActivity extends AppCompatActivity {
     private void setupAdapter() {
         String registeredUserID = mFirebaseUser.getUid();
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("posts");
-        Query postQuery = ref.orderByChild("user/uid").equalTo(registeredUserID).limitToFirst(15);
+        Query postQuery = ref.orderByChild("company").equalTo(registeredUserID).limitToFirst(15);
 
         FirebaseRecyclerOptions options = new FirebaseRecyclerOptions.Builder<Post>().setQuery(postQuery, Post.class).build();
-        mPostAdapter = new FirebaseRecyclerAdapter<Post, CompanyPostsActivity.PostHolder>(options){
+        mPostAdapter = new FirebaseRecyclerAdapter<Post, CompanyPostsActivity.PostHolder>(options) {
             @Override
             protected void onBindViewHolder(@NonNull final CompanyPostsActivity.PostHolder holder, int position, @NonNull final Post model) {
                 holder.setNumComments(String.valueOf(model.getNumComments()));
                 holder.setNumLikes(String.valueOf(model.getNumLikes()));
                 holder.setTime(DateUtils.getRelativeTimeSpanString(model.getTimeCreated()));
-                holder.setUsername(model.getUser().getUsername());
+
+                DatabaseReference postOwnerRef = FirebaseDatabase.getInstance().getReference().child("Company").child(model.getCompany());
+                postOwnerRef.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        String coUsername = dataSnapshot.child("username").getValue().toString();
+                        holder.setUsername(coUsername);
+
+                        String coImage = dataSnapshot.child("image").getValue().toString();
+                        if (coImage != null &&  !coImage.equals("default")) {
+                            Glide.with(getApplicationContext()).load(coImage).into(holder.postOwnerDisplayImageView);
+                        }else if(coImage != null){
+                            holder.postOwnerDisplayImageView.setImageResource(R.drawable.ic_account);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
                 holder.setPostText(model.getPostText());
 
-
-                if(model.getUser().getImage() != null) {
-                    //StorageReference userstorageReference = FirebaseStorage.getInstance().getReference(model.getPostImageUrl());
-                    Glide.with(getApplicationContext())
-                            .load(model.getUser().getImage())
-                            .into(holder.postOwnerDisplayImageView);
-                }
-
                 /*if(model.getPostImageUrl() != null) {*/
-                    holder.postDisplayImageView.setVisibility(View.VISIBLE);
-                    DatabaseReference url_db = FirebaseDatabase.getInstance().getReference("posts").child(model.getPostId()).child("postImageUrl");
-                    url_db.addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            Task<Uri> storageReference = FirebaseStorage.getInstance().getReference(model.getPostImageUrl()).getDownloadUrl();
-                            String url = dataSnapshot.getValue(String.class);
-                            if(url!=null){
-                                //holder.postDisplayImageView.setVisibility(View.VISIBLE);
-                                Glide.with(getApplicationContext())
-                                        .load(storageReference)
-                                        .into(holder.postOwnerDisplayImageView);
-                            }
-                        }
+                holder.postDisplayImageView.setVisibility(View.VISIBLE);
+                DatabaseReference url_db = FirebaseDatabase.getInstance().getReference("posts").child(model.getPostId()).child("postImageUrl");
 
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-
+                url_db.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        //Task<Uri> storageReference = FirebaseStorage.getInstance().getReference(model.getPostImageUrl()).getDownloadUrl();
+                        String url = dataSnapshot.getValue(String.class);
+                       //Log.e("ürl", url.toString());
+                        if (url != null) {
+                            Glide.with(getApplicationContext()).load(url).into(holder.postDisplayImageView);
                         }
-                    });
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
 
                 /*}else{
                     holder.postDisplayImageView.setImageBitmap(null);
@@ -149,6 +161,11 @@ public class CompanyPostsActivity extends AppCompatActivity {
                     }
                 });
 
+                try {
+                    model.getPostId();
+                    //Log.e("mPostEditID", model.getPostId());
+                }catch (NullPointerException e){}
+
                 holder.postCommentLayout.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -161,23 +178,19 @@ public class CompanyPostsActivity extends AppCompatActivity {
                 holder.editLinearLayout.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        PostCreateDialog dialog  = new PostCreateDialog();
+                       // Intent intent = new Intent(getApplicationContext(), PostUpdateDialog.class);
+                        getIntent().putExtra(Constants.EXTRA_POST, model);
+                        PostUpdateDialog dialog = new PostUpdateDialog();
                         dialog.show(getFragmentManager(), null);
-                        Intent intent = new Intent(getApplicationContext(), PostUpdateDialog.class);
-                        intent.putExtra(Constants.EXTRA_POST, model);
-                        //startActivity(intent);
+
                     }
                 });
             }
 
             @Override
-            public CompanyPostsActivity.PostHolder onCreateViewHolder(ViewGroup parent, int viewType){
+            public CompanyPostsActivity.PostHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-                View view = LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.row_post, parent, false);
-
-
-
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_post, parent, false);
                 return new CompanyPostsActivity.PostHolder(view);
             }
 
@@ -185,60 +198,51 @@ public class CompanyPostsActivity extends AppCompatActivity {
     }
 
     private void onLikeClick(final String postId) {
-        FirebaseUtils.getPostLikedRef(postId)
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        if(dataSnapshot.getValue() != null){
-                            //Student liked
-                            FirebaseUtils.getPostRef()
-                                    .child(postId)
-                                    .child(Constants.NUM_LIKES_KEY)
-                                    .runTransaction(new Transaction.Handler() {
-                                        @Override
-                                        public Transaction.Result doTransaction(MutableData mutableData) {
-                                            long num = (long) mutableData.getValue();
-                                            mutableData.setValue(num - 1);
-                                            return Transaction.success(mutableData);
-                                        }
-
-                                        @Override
-                                        public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
-                                            FirebaseUtils.getPostLikedRef(postId)
-                                                    .setValue(null);
-                                        }
-                                    });
-                        }else{
-                            FirebaseUtils.getPostRef()
-                                    .child(postId)
-                                    .child(Constants.NUM_LIKES_KEY)
-                                    .runTransaction(new Transaction.Handler() {
-                                        @Override
-                                        public Transaction.Result doTransaction(MutableData mutableData) {
-                                            long num = (long) mutableData.getValue();
-                                            mutableData.setValue(num+1);
-                                            return Transaction.success(mutableData);
-                                        }
-
-                                        @Override
-                                        public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
-                                            FirebaseUtils.getPostLikedRef(postId)
-                                                    .setValue(true);
-
-                                        }
-                                    });
+        FirebaseUtils.getPostLikedRef(postId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.getValue() != null) {
+                    //Student liked
+                    FirebaseUtils.getPostRef().child(postId).child(Constants.NUM_LIKES_KEY).runTransaction(new Transaction.Handler() {
+                        @Override
+                        public Transaction.Result doTransaction(MutableData mutableData) {
+                            long num = (long) mutableData.getValue();
+                            mutableData.setValue(num - 1);
+                            return Transaction.success(mutableData);
                         }
-                    }
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
+                        @Override
+                        public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
+                            FirebaseUtils.getPostLikedRef(postId).setValue(null);
+                        }
+                    });
+                } else {
+                    FirebaseUtils.getPostRef().child(postId).child(Constants.NUM_LIKES_KEY).runTransaction(new Transaction.Handler() {
+                        @Override
+                        public Transaction.Result doTransaction(MutableData mutableData) {
+                            long num = (long) mutableData.getValue();
+                            mutableData.setValue(num + 1);
+                            return Transaction.success(mutableData);
+                        }
 
-                    }
-                });
+                        @Override
+                        public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
+                            FirebaseUtils.getPostLikedRef(postId).setValue(true);
+
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
 
-    public static class PostHolder extends RecyclerView.ViewHolder{
+    public static class PostHolder extends RecyclerView.ViewHolder {
         ImageView postOwnerDisplayImageView;
         TextView postOwnerUsernameTextView;
         TextView postTimeCreatedTextView;
@@ -249,6 +253,7 @@ public class CompanyPostsActivity extends AppCompatActivity {
         TextView postNumLikesTextView;
         TextView postNumCommentsTextView;
         LinearLayout editLinearLayout;
+
         public PostHolder(View itemView) {
             super(itemView);
             postOwnerDisplayImageView = itemView.findViewById(R.id.profile_image);
@@ -264,19 +269,24 @@ public class CompanyPostsActivity extends AppCompatActivity {
             editLinearLayout = itemView.findViewById(R.id.edit_layout);
             editLinearLayout.setVisibility(View.VISIBLE);
         }
-        public void setUsername(String username){
+
+        public void setUsername(String username) {
             postOwnerUsernameTextView.setText(username);
         }
-        public void setTime(CharSequence time){
+
+        public void setTime(CharSequence time) {
             postTimeCreatedTextView.setText(time);
         }
-        public void setNumLikes(String numLikes){
+
+        public void setNumLikes(String numLikes) {
             postNumLikesTextView.setText(numLikes);
         }
-        public void setNumComments(String numComments){
+
+        public void setNumComments(String numComments) {
             postNumCommentsTextView.setText(numComments);
         }
-        public void setPostText(String text){
+
+        public void setPostText(String text) {
             postTextTextView.setText(text);
         }
     }

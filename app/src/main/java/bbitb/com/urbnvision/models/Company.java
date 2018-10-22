@@ -1,4 +1,4 @@
-package bbitb.com.urbnvision;
+package bbitb.com.urbnvision.models;
 
 import com.google.firebase.database.Exclude;
 
@@ -101,7 +101,7 @@ public class Company implements Serializable {
 
     }
 
-    @Exclude
+    /*@Exclude
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
         result.put("username", username);
@@ -112,7 +112,7 @@ public class Company implements Serializable {
         result.put("phone", phone);
 
         return result;
-    }
+    }*/
 
     public String getName() {
         return name;
@@ -178,6 +178,46 @@ public class Company implements Serializable {
         this.totalRating = totalRating;
     }
 
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String title) {
+        this.username = title;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public String getWebsite() {
+        return website;
+    }
+
+    public void setWebsite(String url) {
+        this.website = url;
+    }
+
+    /*public String getNotifications() {
+        return notifications;
+    }
+
+    public void setNotifications(String notifications) {
+        this.notifications = notifications;
+    }*/
+
     public int getStar1() {
         return star1;
     }
@@ -216,45 +256,5 @@ public class Company implements Serializable {
 
     public void setStar5(int star5) {
         this.star5 = star5;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String title) {
-        this.username = title;
-    }
-
-    public String getDesc() {
-        return desc;
-    }
-
-    public void setDesc(String desc) {
-        this.desc = desc;
-    }
-
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
-    }
-
-    public String getWebsite() {
-        return website;
-    }
-
-    public void setWebsite(String url) {
-        this.website = url;
-    }
-
-    public String getNotifications() {
-        return notifications;
-    }
-
-    public void setNotifications(String notifications) {
-        this.notifications = notifications;
     }
 }

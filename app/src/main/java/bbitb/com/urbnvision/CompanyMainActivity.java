@@ -2,8 +2,6 @@ package bbitb.com.urbnvision;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.net.Uri;
-import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,8 +16,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -32,8 +28,8 @@ import com.google.firebase.storage.StorageReference;
 
 import java.text.DecimalFormat;
 
+import bbitb.com.urbnvision.models.Company;
 import bbitb.com.urbnvision.models.Constants;
-import bbitb.com.urbnvision.models.Student;
 import me.zhanghai.android.materialratingbar.MaterialRatingBar;
 
 public class CompanyMainActivity extends AppCompatActivity {
@@ -264,13 +260,18 @@ public class CompanyMainActivity extends AppCompatActivity {
                     }catch (NullPointerException e){}
 
                     try {
-                        image = dataSnapshot.child("image").child("image").getValue().toString();
-                        if(image !=null){
+                        image = dataSnapshot.child("image").getValue().toString();
+                        if (image != null && !image.equals("default")) {
+                            Glide.with(getApplicationContext()).load(image).into(mDisplayImageView);
+                        }else if(image != null){
+                            mDisplayImageView.setImageResource(R.drawable.ic_account);
+                        }
+                        /*if(image !=null){
                             StorageReference storageReference = FirebaseStorage.getInstance().getReference(image);
                             Glide.with(getApplicationContext())
                                     .load(storageReference)
                                     .into(mDisplayImageView);
-                        }
+                        }*/
                     }catch (NullPointerException e){ }
 
                     //company.getUid();

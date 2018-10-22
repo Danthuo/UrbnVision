@@ -155,7 +155,7 @@
                         android:layout_height="wrap_content"
                         android:textColor="@color/headings"
                         android:textSize="13sp"
-                        android:text="Company Name"
+                        android:text="Student's Full Name"
                         android:fontFamily="@font/aileron_light"/>
                     <EditText
                         android:id="@+id/acc_name"

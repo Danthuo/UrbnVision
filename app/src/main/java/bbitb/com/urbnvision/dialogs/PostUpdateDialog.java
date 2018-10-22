@@ -15,7 +15,13 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import bbitb.com.urbnvision.R;
 import bbitb.com.urbnvision.models.Constants;
@@ -39,22 +45,40 @@ public class PostUpdateDialog extends DialogFragment implements View.OnClickList
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        mRootView = getActivity().getLayoutInflater().inflate(R.layout.create_post_dialog, null);
+
         mPost = new Post();
         mProgressDialog = new ProgressDialog(getActivity());
 
         Intent intent = getActivity().getIntent();
         mPost = (Post)intent.getSerializableExtra(Constants.EXTRA_POST);
 
-        firebaseAuth = FirebaseAuth.getInstance();
+        //Log.e("mPostEditID", mPost.getPostId());
 
-        mRootView = getActivity().getLayoutInflater().inflate(R.layout.create_post_dialog, null);
+        firebaseAuth = FirebaseAuth.getInstance();
+        postDialogEditText = mRootView.findViewById(R.id.post_dialog_edittext);
+        //postDialogEditText.setText(mPost.getPostText());
 
         mPostDisplay = mRootView.findViewById(R.id.post_dialog_display);
-        //mPostDisplay.setImageURI();
 
-        postDialogEditText = mRootView.findViewById(R.id.post_dialog_edittext);
-        postDialogEditText.setText(mPost.getPostText());
-        Log.d("postUpdateDialog......", mPost.getPostText());
+        DatabaseReference jDatabase = FirebaseDatabase.getInstance().getReference().child("posts").child(mPost.getPostId());
+        jDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String postImage = dataSnapshot.child("postImageUrl").getValue().toString();
+                if (postImage != "default" && postImage != null) {
+                    Glide.with(getContext()).load(postImage).into(mPostDisplay);
+                }else{
+                    mPostDisplay.setImageResource(R.drawable.ic_account);
+                }
+                String postText = dataSnapshot.child("postText").getValue().toString();
+                postDialogEditText.setText(postText);
+                }
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+                });
 
         mRootView.findViewById(R.id.post_dialog_send_imageview).setOnClickListener(this);
         mRootView.findViewById(R.id.post_dialog_select_imageview).setOnClickListener(this);

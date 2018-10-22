@@ -2,10 +2,8 @@ package bbitb.com.urbnvision.models;
 
 import java.io.Serializable;
 
-import bbitb.com.urbnvision.Company;
-
 public class Post implements Serializable{
-    private Company company;
+    private String company;
     private String postText;
     private  String postImageUrl;
     private String postId;
@@ -17,7 +15,7 @@ public class Post implements Serializable{
 
     }
 
-    public Post(Company company, String postText, String postImageUrl, String postId, long numLikes, long numComments, long timeCreated) {
+    public Post(String company, String postText, String postImageUrl, String postId, long numLikes, long numComments, long timeCreated) {
         this.company = company;
         this.postText = postText;
         this.postImageUrl = postImageUrl;
@@ -27,13 +25,21 @@ public class Post implements Serializable{
         this.timeCreated = timeCreated;
     }
 
-    public Company getUser() {
+    public String getCompany() {
         return company;
     }
 
-    public void setUser(Company company) {
+    public void setCompany(String company) {
         this.company = company;
     }
+
+    /*public String getUser() {
+        return company;
+    }
+
+    public void setUser(String company) {
+        this.company = company;
+    }*/
 
     public String getPostText() {
         return postText;

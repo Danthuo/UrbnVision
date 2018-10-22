@@ -273,7 +273,7 @@
                         android:gravity="center"
                         android:textSize="35sp"
                         android:textStyle="bold"
-                        tools:text="0" />
+                        android:text="0" />
 
                     <me.zhanghai.android.materialratingbar.MaterialRatingBar
                         android:id="@+id/total_star_rating"
@@ -300,7 +300,7 @@
                         android:layout_marginLeft="-5dp"
                         android:drawableLeft="@drawable/ic_person_black_24dp"
                         android:gravity="center|left"
-                        tools:text="80 total" />
+                        android:text="0 total" />
                 </LinearLayout>
 
                 <LinearLayout

@@ -16,13 +16,15 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <ImageView
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/thumbnail"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="16dp"
                 android:background="?android:attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_person_black_24dp"
                 android:clickable="true"
-                android:scaleType="fitXY"
                 android:layout_marginBottom="16dp"/>
 
             <TextView
@@ -33,7 +35,7 @@
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 android:layout_marginBottom="8dp"
-                android:textColor="@color/text_grey"
+                android:textColor="@color/txtTransparentGray"
                 android:textSize="15sp"
                 android:text="Company Name"/>
 
@@ -45,10 +47,11 @@
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 android:layout_marginBottom="8dp"
-                android:textColor="@color/text_grey"
-                android:textSize="12sp"
+                android:textColor="@color/txtTransparentGray"
+                android:textSize="10sp"
+                android:textStyle="bold"
                 android:text="Company Email"
-                android:visibility="invisible"/>
+                android:visibility="visible"/>
 
             <TextView
                 android:id="@+id/co_desc"
@@ -58,23 +61,37 @@
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 android:layout_marginBottom="16dp"
-                android:textColor="@color/text_grey"
-                android:textSize="15sp"
+                android:textColor="@color/txtTransparentGray"
+                android:textSize="10sp"
+                android:textStyle="bold"
                 android:text="Company Bio"/>
+
+            <View
+                android:id="@+id/viewSeparator"
+                android:layout_below="@+id/co_desc"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:background="@android:color/darker_gray" />
+
+
             <ImageView
                 android:id="@+id/noti_status_image"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
-                android:layout_below="@+id/co_desc"
+                android:layout_below="@+id/viewSeparator"
                 android:paddingBottom="5dp"
                 android:src="@drawable/ic_notifications_black_24dp"
+                android:visibility="invisible"
                 />
             <TextView
                 android:id="@+id/noti_status"
                 android:layout_width="60dp"
                 android:layout_height="wrap_content"
                 android:maxLines="1"
-                android:layout_below="@id/co_desc"
+                android:layout_below="@id/viewSeparator"
                 android:paddingBottom="5dp"
                 android:layout_marginBottom="8dp"
                 android:paddingLeft="10dp"
@@ -87,7 +104,7 @@
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:layout_alignParentRight="true"
-                android:layout_below="@id/co_desc"
+                android:layout_below="@id/viewSeparator"
                 android:scaleType="centerCrop"
                 android:src="@drawable/ic_more_vert_black_24dp"/>
 
@@ -107,7 +124,8 @@
                 app:mrb_progressBackgroundTint="@color/colorPrimary"
                 app:mrb_progressTint="@color/colorPrimary"
                 app:mrb_secondaryProgressTint="@color/colorPrimary"
-                android:layout_below="@id/co_desc"/>
+                android:layout_below="@id/co_desc"
+                android:visibility="gone"/>
 
 
         </RelativeLayout>

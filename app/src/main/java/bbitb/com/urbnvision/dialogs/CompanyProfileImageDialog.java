@@ -24,10 +24,9 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.UploadTask;
 
-import bbitb.com.urbnvision.Company;
+import bbitb.com.urbnvision.models.Company;
 import bbitb.com.urbnvision.R;
 import bbitb.com.urbnvision.models.Constants;
-import bbitb.com.urbnvision.models.FirebaseUtils;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -99,8 +98,10 @@ public class CompanyProfileImageDialog extends DialogFragment implements View.On
                                         @Override
                                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                                             String url = Constants.PROFILE_IMAGES + "/" + mSelectedUri.getLastPathSegment();
-                                            iCompany.setImage(url);
-                                            addImageToUserProfile();
+                                            Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                                            //iCompany.setImage(String.valueOf(downloadUrl));
+                                            String basicImage = String.valueOf(downloadUrl);
+                                            addImageToUserProfile(basicImage);
                                         }
                                     });
                         }
@@ -113,14 +114,14 @@ public class CompanyProfileImageDialog extends DialogFragment implements View.On
                 });
     }
 
-    private void addImageToUserProfile() {
+    private void addImageToUserProfile(String image) {
         FirebaseUser currentUser = firebaseAuth.getCurrentUser();
         String registeredUserID = currentUser.getUid();
         DatabaseReference studentDatabase = FirebaseDatabase.getInstance().getReference().child("Company").child(registeredUserID).child("image");
 
 
         studentDatabase
-                .setValue(iCompany)
+                .setValue(image)
                 .addOnCompleteListener(getActivity(), new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {

@@ -6,7 +6,6 @@ import android.app.DialogFragment;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,7 +13,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -28,9 +26,8 @@ import com.google.firebase.database.ValueEventListener;
 import java.text.DecimalFormat;
 import java.util.Date;
 
-import bbitb.com.urbnvision.Company;
+import bbitb.com.urbnvision.models.Company;
 import bbitb.com.urbnvision.CompanyReviews;
-import bbitb.com.urbnvision.CompanySettingsActivity;
 import bbitb.com.urbnvision.R;
 import bbitb.com.urbnvision.models.Constants;
 import bbitb.com.urbnvision.models.FirebaseUtils;
@@ -127,7 +124,7 @@ public class ReviewDialog extends DialogFragment implements View.OnClickListener
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         Student student = dataSnapshot.getValue(Student.class);
 
-                        if(postQuery == null){
+                        /*if(postQuery == null){*/
                         final String reviewId = FirebaseUtils.getReviewUid();
                         String text = review_et.getText().toString();
 
@@ -138,12 +135,12 @@ public class ReviewDialog extends DialogFragment implements View.OnClickListener
                         mReview.setReviewId(reviewId);
 
                         addToMyReviewsList(reviewId);
-                        }else{
+                        /*}else{
                             Toast.makeText(getActivity(), "Your review for this company already exists", Toast.LENGTH_LONG).show();
                             mProgressDialog.dismiss();
                             dismiss();
 
-                        }
+                        }*/
                     }
 
                     @Override

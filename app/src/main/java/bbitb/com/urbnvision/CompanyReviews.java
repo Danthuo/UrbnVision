@@ -30,6 +30,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.text.DecimalFormat;
 
 import bbitb.com.urbnvision.dialogs.ReviewDialog;
+import bbitb.com.urbnvision.models.Company;
 import bbitb.com.urbnvision.models.Constants;
 import bbitb.com.urbnvision.models.Review;
 import me.zhanghai.android.materialratingbar.MaterialRatingBar;

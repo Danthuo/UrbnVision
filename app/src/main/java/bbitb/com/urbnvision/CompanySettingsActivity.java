@@ -155,9 +155,18 @@ public class CompanySettingsActivity extends AppCompatActivity {
                         editTextCompanyPhone.setText(companyPhone);
                     }catch (NullPointerException e){}
 
+                    String coImage = dataSnapshot.child("image").getValue().toString();
+                    if (coImage != "default" && coImage != null) {
+                        Glide.with(getApplicationContext()).load(coImage).into(userpicIv);
+                    }else{
+                        userpicIv.setImageResource(R.drawable.ic_account);
+                    }
+
                     companyLocation();
 
-                    String urlPhoto = dataSnapshot.child("image").getValue().toString();
+
+
+                    /*String urlPhoto = dataSnapshot.child("image").getValue().toString();
                     final StorageReference storageReference = FirebaseStorage.getInstance().getReference();
                     storageReference.child(urlPhoto).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                         @Override
@@ -171,7 +180,7 @@ public class CompanySettingsActivity extends AppCompatActivity {
                         public void onFailure(@NonNull Exception exception) {
                             // Handle any errors
                         }
-                    });
+                    });*/
 
                     /*try {
                         String urlPhoto = dataSnapshot.child("profileImage").child("photoUrl").getValue().toString();
@@ -260,7 +269,7 @@ public class CompanySettingsActivity extends AppCompatActivity {
                     public void onSuccess(Void aVoid) {
                         Toast.makeText(CompanySettingsActivity.this, "Company details Successfully updated", Toast.LENGTH_LONG).show();
                         finish();
-                        startActivity(new Intent(getApplicationContext(), StudentMainActivity.class));
+                        startActivity(new Intent(getApplicationContext(), CompanyMainActivity.class));
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {

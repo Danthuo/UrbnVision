@@ -93,7 +93,7 @@ public class StudentNotifyNav extends Fragment {
         FirebaseRecyclerOptions<Post> options = new FirebaseRecyclerOptions.Builder<Post>().setQuery(postQuery, Post.class).build();
         mPostAdapter = new FirebaseRecyclerAdapter<Post, StudentNotifyNav.PostHolder>(options){
             @Override
-            protected void onBindViewHolder(@NonNull StudentNotifyNav.PostHolder holder, int position, @NonNull final Post model) {
+            protected void onBindViewHolder(@NonNull final StudentNotifyNav.PostHolder holder, int position, @NonNull final Post model) {
                 try {
                     holder.setNumComments(String.valueOf(model.getNumComments()));
                 }catch (NullPointerException e){
@@ -109,24 +109,53 @@ public class StudentNotifyNav extends Fragment {
                 }catch (NullPointerException e){
                 }
 
-                try {
-                    holder.setUsername(model.getUser().getUsername());
-                }catch (NullPointerException e){
-                }
+                DatabaseReference postOwnerRef = FirebaseDatabase.getInstance().getReference().child("Company").child(model.getCompany());
+                postOwnerRef.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        String coUsername = dataSnapshot.child("username").getValue().toString();
+                        holder.setUsername(coUsername);
+
+                        String coImage = dataSnapshot.child("image").getValue().toString();
+                        if (coImage != null &&  !coImage.equals("default")) {
+                            Glide.with(getContext()).load(coImage).into(holder.postOwnerDisplayImageView);
+                        }else if(coImage != null){
+                            holder.postOwnerDisplayImageView.setImageResource(R.drawable.ic_account);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
 
                 try {
                     holder.setPostText(model.getPostText());
                 }catch (NullPointerException e){
                 }
-                try{
-                if(model.getUser().getImage() != null) {
-                    //StorageReference userstorageReference = FirebaseStorage.getInstance().getReference(model.getPostImageUrl());
-                        Glide.with(getContext())
-                                .load(model.getUser().getImage())
-                                .into(holder.postOwnerDisplayImageView); }
-                }catch (NullPointerException e){}
 
-                try {
+                holder.postDisplayImageView.setVisibility(View.VISIBLE);
+                DatabaseReference url_db = FirebaseDatabase.getInstance().getReference("posts").child(model.getPostId()).child("postImageUrl");
+
+                url_db.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        //Task<Uri> storageReference = FirebaseStorage.getInstance().getReference(model.getPostImageUrl()).getDownloadUrl();
+                        String url = dataSnapshot.getValue(String.class);
+                        //Log.e("ürl", url.toString());
+                        if (url != null) {
+                            Glide.with(getContext()).load(url).into(holder.postDisplayImageView);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+                /*try {
                 if(model.getPostImageUrl() != null) {
                         holder.postDisplayImageView.setVisibility(View.VISIBLE);
                         StorageReference storageReference = FirebaseStorage.getInstance().getReference(model.getPostImageUrl());
@@ -138,7 +167,7 @@ public class StudentNotifyNav extends Fragment {
                     holder.postDisplayImageView.setImageBitmap(null);
                     holder.postDisplayImageView.setVisibility(View.GONE);
                 }
-                }catch (NullPointerException e){}
+                }catch (NullPointerException e){}*/
 
                 holder.postLikeLayout.setOnClickListener(new View.OnClickListener() {
                     @Override

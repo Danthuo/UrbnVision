@@ -22,14 +22,13 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.UploadTask;
 
-import bbitb.com.urbnvision.Company;
 import bbitb.com.urbnvision.R;
 import bbitb.com.urbnvision.models.Constants;
 import bbitb.com.urbnvision.models.FirebaseUtils;
 import bbitb.com.urbnvision.models.Post;
-import bbitb.com.urbnvision.models.Student;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -97,14 +96,14 @@ public class PostCreateDialog extends DialogFragment implements View.OnClickList
                         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid().toString();
 
                         Student student = new Student(username, email, uid );*/
-                        Company company = dataSnapshot.getValue(Company.class);
+                        String companyID = dataSnapshot.child("uid").getValue().toString();
                         //Log.d(TAG, "dataSnapshot: Student info :- "+ student);
 
                         final String postId = FirebaseUtils.getUid();
                         TextView postDialogTextView = mRootView.findViewById(R.id.post_dialog_edittext);
                         String text = postDialogTextView.getText().toString();
 
-                        mPost.setUser(company);
+                        mPost.setCompany(companyID);
                         mPost.setNumComments(0);
                         mPost.setNumLikes(0);
                         mPost.setTimeCreated(System.currentTimeMillis());
@@ -112,14 +111,15 @@ public class PostCreateDialog extends DialogFragment implements View.OnClickList
                         mPost.setPostText(text);
 
                         if(mSelectedUri != null){
-                            FirebaseUtils.getImagesRef()
+                            FirebaseStorage.getInstance().getReference(Constants.POST_IMAGES)
                                     .child(mSelectedUri.getLastPathSegment())
                                     .putFile(mSelectedUri)
                                     .addOnSuccessListener(getActivity(), new OnSuccessListener<UploadTask.TaskSnapshot>() {
                                         @Override
                                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                                             String url = Constants.POST_IMAGES + "/" + mSelectedUri.getLastPathSegment();
-                                            mPost.setPostImageUrl(url);
+                                            Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                                            mPost.setPostImageUrl(String.valueOf(downloadUrl));
                                             addToMyPostList(postId);
                                         }
                                     });

@@ -44,6 +44,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import bbitb.com.urbnvision.models.Company;
 import bbitb.com.urbnvision.models.Student;
 
 import static android.Manifest.permission.READ_CONTACTS;

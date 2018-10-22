@@ -1,6 +1,7 @@
 package bbitb.com.urbnvision;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -78,12 +80,9 @@ public class StudentDashNav extends Fragment{
         FirebaseUser currentUser = firebaseAuth.getCurrentUser();
         String registeredUserID = currentUser.getUid();
         DatabaseReference jLoginDatabase = FirebaseDatabase.getInstance().getReference().child("Student").child(registeredUserID);
-
         /*String urlPhoto;
         Student user = new Student();
         urlPhoto = user.getPhotoUrl();*/
-
-
         jLoginDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -94,14 +93,13 @@ public class StudentDashNav extends Fragment{
 
                 String urlPhoto;
                 try {
-                    urlPhoto = dataSnapshot.child("profileImage").child("photoUrl").getValue().toString();
-                    StorageReference userStorageReference = FirebaseStorage.getInstance().getReference(urlPhoto);
-                    Glide.with(getContext())
-                            .load(userStorageReference).
-                            into(userDisplayImageView);
-                }catch (NullPointerException e){
-
-                }
+                    urlPhoto = dataSnapshot.child("photoUrl").getValue().toString();
+                    if (urlPhoto != null && !urlPhoto.equals("default")) {
+                        Glide.with(getContext()).load(urlPhoto).into(userDisplayImageView);
+                    }else if(urlPhoto != null){
+                        userDisplayImageView.setImageResource(R.drawable.ic_account);
+                    }
+                }catch (NullPointerException e){ }
 
             }
             @Override

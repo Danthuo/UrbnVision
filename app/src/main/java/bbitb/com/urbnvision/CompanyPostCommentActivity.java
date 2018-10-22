@@ -139,19 +139,40 @@ public class CompanyPostCommentActivity extends AppCompatActivity implements Vie
     }
 
     private void initPost() {
-        ImageView postOwnerDisplayImageView = findViewById(R.id.profile_image);
-        TextView postOwnerUsernameTextView = findViewById(R.id.tv_post_username);
+        final ImageView postOwnerDisplayImageView = findViewById(R.id.profile_image);
+        final TextView postOwnerUsernameTextView = findViewById(R.id.tv_post_username);
         TextView postTimeCreatedTextView = findViewById(R.id.tv_time);
-        ImageView postDisplayImageView = findViewById(R.id.iv_post_display);
+        final ImageView postDisplayImageView = findViewById(R.id.iv_post_display);
         LinearLayout postLikeLayout = findViewById(R.id.like_layout);
         LinearLayout postCommentLayout = findViewById(R.id.comment_layout);
         TextView postNumLikesTextView = findViewById(R.id.tv_likes);
         TextView postNumCommentsTextView = findViewById(R.id.tv_comments);
         TextView postTextTextView = findViewById(R.id.tv_post_text);
 
-        try {
-            postOwnerUsernameTextView.setText(mPost.getUser().getUsername());
-        }catch (NullPointerException e){}
+        DatabaseReference postOwnerRef = FirebaseDatabase.getInstance().getReference().child("Company").child(mPost.getCompany());
+        postOwnerRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String coUsername = dataSnapshot.child("username").getValue().toString();
+                try {
+                    postOwnerUsernameTextView.setText(coUsername);
+                }catch (NullPointerException e){}
+
+                String coImage = dataSnapshot.child("image").getValue().toString();
+                if (coImage != null &&  !coImage.equals("default")) {
+                    Glide.with(getApplicationContext()).load(coImage).into(postOwnerDisplayImageView);
+                }else if(coImage != null){
+                    postOwnerDisplayImageView.setImageResource(R.drawable.ic_account);
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
 
         try {
             postTimeCreatedTextView.setText(DateUtils.getRelativeTimeSpanString(mPost.getTimeCreated()));
@@ -169,22 +190,24 @@ public class CompanyPostCommentActivity extends AppCompatActivity implements Vie
             postNumCommentsTextView.setText(String.valueOf(mPost.getNumComments()));
         }catch (NullPointerException e){}
 
-        try {
-            Glide.with(CompanyPostCommentActivity.this)
-                    .load(mPost.getUser().getImage())
-                    .into(postOwnerDisplayImageView);
-        }catch (NullPointerException e){}
 
         try {
-            if(mPost.getPostImageUrl() != null) {
-                postDisplayImageView.setVisibility(View.VISIBLE);
-                StorageReference mStorageReference = FirebaseStorage.getInstance().getReference(mPost.getPostImageUrl());
+            DatabaseReference jLoginDatabase = FirebaseDatabase.getInstance().getReference().child("posts").child(mPost.getPostId());
+            jLoginDatabase.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    String image = dataSnapshot.child("postImageUrl").getValue().toString();
+                    if (image != null && !image.equals("default")) {
+                        Glide.with(getApplicationContext()).load(image).into(postDisplayImageView);
+                    }else if(image != null){
+                        postDisplayImageView.setImageResource(R.drawable.ic_account);
+                    }
+                    }
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
 
-                Glide.with(CompanyPostCommentActivity.this).load(mStorageReference).into(postDisplayImageView);
-            }else {
-                postDisplayImageView.setImageBitmap(null);
-                postDisplayImageView.setVisibility(View.GONE);
-            }
+                    }
+                    });
         }catch (NullPointerException e){}
 
 

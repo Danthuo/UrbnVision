@@ -15,8 +15,9 @@
             android:id="@+id/profile_image"
             android:layout_width="40dp"
             android:layout_height="40dp"
+            android:layout_marginTop="5dp"
             android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
+            android:layout_marginRight="10dp"
             android:src="@drawable/ic_person_black_24dp"
            />
 
@@ -30,9 +31,9 @@
             android:layout_weight="1"
             android:singleLine="true"
             android:text="Username"
-            android:textColor="@color/text_grey"
+            android:textColor="@color/txtTransparentGray"
             android:textSize="16sp"
-            android:textStyle="bold"
+            android:fontFamily="@font/aileron_light"
             />
         <TextView
             android:id="@+id/tv_time"
@@ -41,6 +42,7 @@
             android:layout_marginRight="16dp"
             android:layout_marginTop="16dp"
             android:text="10h30"
+            android:fontFamily="@font/aileron_light"
             />
 
     </LinearLayout>
@@ -52,12 +54,13 @@
         android:layout_marginBottom="8dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
+        android:fontFamily="@font/aileron_light"
         android:text="Post text has some words that i could use for place builder like this"
         />
     <ImageView
         android:id="@+id/iv_post_display"
-        android:layout_width="250dp"
-        android:layout_height="250dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:adjustViewBounds="true"
         android:layout_gravity="center"
         android:src="@drawable/ic_featured_placeholder_24dp"/>

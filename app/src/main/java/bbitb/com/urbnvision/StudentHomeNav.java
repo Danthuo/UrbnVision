@@ -18,15 +18,18 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
-import bbitb.com.urbnvision.dialogs.PostCreateDialog;
-import bbitb.com.urbnvision.dialogs.StudentProfileImageDialog;
+import bbitb.com.urbnvision.models.Company;
 import bbitb.com.urbnvision.models.Constants;
 import me.zhanghai.android.materialratingbar.MaterialRatingBar;
 
@@ -54,7 +57,7 @@ public class StudentHomeNav extends Fragment {
 
         mCompanies = view.findViewById(R.id.RecyclerView);
 
-        DatabaseReference companyRef = FirebaseDatabase.getInstance().getReference().child("Company");
+        final DatabaseReference companyRef = FirebaseDatabase.getInstance().getReference().child("Company");
         Query companyQuery = companyRef.orderByKey();
         mCompanies.hasFixedSize();
         mCompanies.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -66,43 +69,47 @@ public class StudentHomeNav extends Fragment {
                 //final Company company = mCompaniesAdapter.getItem(position);
                 final Intent intent = new Intent(getContext(),StudentCompanyView.class);
 
-                try{
-                    //intent.putExtra("Username", company.getUsername());
-                    holder.setUsername(model.getUsername());
-                }catch (NullPointerException e){
-                    Log.e(TAG, "companyAdapter :- "+ e.getMessage());
-                }
+               companyRef.child(model.getUid()).addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        String coUsername = dataSnapshot.child("username").getValue().toString();
+                        holder.setUsername(coUsername);
 
-                try{
-                    //intent.putExtra("Bio", company.getDesc());
-                    holder.setDesc(model.getDesc());
-                }catch (NullPointerException e){
-                    Log.e(TAG, "companyAdapter :- "+ e.getMessage());
-                }
+                        String bio = dataSnapshot.child("desc").getValue().toString();
+                        holder.setDesc(bio);
 
-                try{
-                    //intent.putExtra("Notifications", company.getNotifications());
-                    holder.setNotifications(model.getNotifications());
-                }catch (NullPointerException e){
-                    Log.e(TAG, "companyAdapter :- "+ e.getMessage());
-                }
+                        String coImage = dataSnapshot.child("image").getValue().toString();
+                        if (coImage != null &&  !coImage.equals("default") ) {
+                            Glide.with(getContext()).load(coImage).into(holder.companyDisplayImageView);
+                        }else if(coImage != null){
+                            holder.companyDisplayImageView.setImageResource(R.drawable.ic_account);
+                        }
+                    }
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
 
-                try{
-                    //intent.putExtra("Image", company.getImage());
-                    holder.setImage(getContext(), model.getImage());
-                }catch (NullPointerException e){
-                    Log.e(TAG, "companyAdapter :- "+ e.getMessage());
-                }
+                    }
+                });
+
 
                 //for the student company view
+                try{
+                    //intent.putExtra("Username", company.getUsername());
+                    model.getUsername();
+                }catch (NullPointerException e){
+                    Log.e(TAG, "companyAdapter :- "+ e.getMessage());
+                }
+
                 try{
                     //intent.putExtra("Email", company.getEmail());
                     holder.setCompanyEmail(model.getEmail());
                 }catch (NullPointerException e){Log.e(TAG, "companyAdapter :- "+ e.getMessage());}
 
-                /*try{
+                try{
                     model.getDesc();
-                }catch (NullPointerException e){Log.e(TAG, "companyAdapter :- "+ e.getMessage());}*/
+                }catch (NullPointerException e){
+                    Log.e(TAG, "companyAdapter :- "+ e.getMessage());
+                }
 
                 try{
                     //intent.putExtra("Phone", company.getPhone());
@@ -209,10 +216,6 @@ public class StudentHomeNav extends Fragment {
         }
         public void setNotifications(String notifications){
             companyNotificationsTextView.setText(notifications);
-        }
-        public void  setImage(Context ctx, String image){
-            ImageView post_image = mView.findViewById(R.id.thumbnail);
-            Picasso.with(ctx).load(image).into(post_image);
         }
 
     }

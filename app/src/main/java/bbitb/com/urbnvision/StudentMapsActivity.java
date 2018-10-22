@@ -77,7 +77,7 @@ public class StudentMapsActivity extends FragmentActivity implements
 
     private static final String TAG = CompanyMapsActivity.class.getSimpleName();
     private GoogleMap mMap;
-    private final LatLng mDefaultLocation = new LatLng(-1.3031934, 36.5672003);
+    private final LatLng mDefaultLocation = new LatLng(-1.285790, 36.820030);
     private static final int DEFAULT_ZOOM = 15;
     private static final int PERMISSIONS_REQUEST = 100;
     private Boolean mLocationPermissionGranted;
