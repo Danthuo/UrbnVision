@@ -113,10 +113,10 @@ public class StudentMainActivity extends AppCompatActivity {
                 finish();
                 startActivity(new Intent(getApplicationContext(), LoginActivity.class));
                 break;
-            case R.id.changeUsername:
-                /*finish();
-                startActivity(new Intent(getApplicationContext(), CompanySettingsActivity.class));*/
-                break;
+            /*case R.id.changeUsername:
+                *//*finish();
+                startActivity(new Intent(getApplicationContext(), CompanySettingsActivity.class));*//*
+                break;*/
         }
 
         return true;

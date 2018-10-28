@@ -50,7 +50,7 @@ public class StudentSettingsActivity extends AppCompatActivity {
 
         nameTv = findViewById(R.id.textView_name);
         userprofilepcTv = findViewById(R.id.edit_pic);
-        userpicIv = findViewById(R.id.profile_pic);
+        userpicIv = findViewById(R.id.imageView_display);
         stud_email =findViewById(R.id.acc_email);
         stud_username = findViewById(R.id.acc_username);
         stud_name = findViewById(R.id.acc_name);
@@ -88,7 +88,7 @@ public class StudentSettingsActivity extends AppCompatActivity {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         Log.d(TAG, "onDataChange: Student id :- "+FirebaseAuth.getInstance().getCurrentUser().getUid());
-                        String email, name, username, phone, urlPhoto, website, bio;
+                        String email, name, username, phone, website, bio;
 
                         try {
                             email = dataSnapshot.child("email").getValue().toString();
@@ -122,13 +122,13 @@ public class StudentSettingsActivity extends AppCompatActivity {
                             stud_phone.setText(phone);
                         }catch (NullPointerException e){ }
 
+                        String urlPhoto;
                         try {
-                            urlPhoto = dataSnapshot.child("profileImage").child("photoUrl").getValue().toString();
-                            if(urlPhoto !=null){
-                                StorageReference storageReference = FirebaseStorage.getInstance().getReference(urlPhoto);
-                                Glide.with(getApplicationContext())
-                                        .load(storageReference)
-                                        .into(userpicIv);
+                            urlPhoto = dataSnapshot.child("photoUrl").getValue().toString();
+                            if (urlPhoto != null && !urlPhoto.equals("default")) {
+                                Glide.with(getApplicationContext()).load(urlPhoto).into(userpicIv);
+                            }else if(urlPhoto != null){
+                                userpicIv.setImageResource(R.drawable.ic_account);
                             }
                         }catch (NullPointerException e){ }
 

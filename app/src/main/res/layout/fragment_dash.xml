@@ -81,19 +81,20 @@
             <RelativeLayout
                 android:layout_width="60dp"
                 android:layout_height="60dp"
-                android:layout_marginLeft="70dp">
+                android:layout_marginLeft="105dp"
+                >
             <ImageView
-                android:id="@+id/editprofile_image"
+                android:id="@+id/editprofile_img"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_centerHorizontal="true"
                 android:background="@drawable/ic_edit_black_24dp"/>
                 <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="10dp"
-                    android:layout_below="@+id/editprofile_image"
+                    android:layout_height="12dp"
+                    android:layout_below="@+id/editprofile_img"
                     android:textAlignment="center"
-                    android:text="Edit Bio"
+                    android:text="Settings"
                     android:textSize="10sp"
                     />
             </RelativeLayout>
@@ -121,7 +122,8 @@
             <RelativeLayout
                 android:layout_width="60dp"
                 android:layout_height="60dp"
-                android:layout_marginLeft="25dp">
+                android:layout_marginLeft="25dp"
+                android:visibility="gone">
                 <ImageView
                     android:id="@+id/more_image"
                     android:layout_width="30dp"

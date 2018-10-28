@@ -14,15 +14,23 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.UploadTask;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import bbitb.com.urbnvision.CompanyPostsActivity;
 import bbitb.com.urbnvision.R;
 import bbitb.com.urbnvision.models.Constants;
 import bbitb.com.urbnvision.models.Post;
@@ -102,8 +110,48 @@ public class PostUpdateDialog extends DialogFragment implements View.OnClickList
     }
 
     private void updatePost() {
+        mProgressDialog.setMessage("Updating post...");
+        mProgressDialog.setCancelable(false);
+        mProgressDialog.setIndeterminate(true);
+        mProgressDialog.show();
+
+        if(mSelectedUri != null){
+            FirebaseStorage.getInstance().getReference(Constants.POST_IMAGES)
+                    .child(mPost.getPostId())
+                    .child(mSelectedUri.getLastPathSegment())
+                    .putFile(mSelectedUri)
+                    .addOnSuccessListener(getActivity(), new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            //String url = Constants.POST_IMAGES + "/" + mSelectedUri.getLastPathSegment();
+                            Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                            mPost.setPostImageUrl(String.valueOf(downloadUrl));
+                            updateMyPost(mPost.getPostId());
+                        }
+                    });
+        }else{
+            updateMyPost(mPost.getPostId());
+        }
     }
 
+    private void updateMyPost(String postId) {
+        TextView postDialogTextView = mRootView.findViewById(R.id.post_dialog_edittext);
+        String text = postDialogTextView.getText().toString();
+        DatabaseReference dbRef=FirebaseDatabase.getInstance().getReference().child("posts").child(postId);
+        Map<String, Object> postUpdates = new HashMap<>();
+        postUpdates.put("postText",text);
+        postUpdates.put("postImageUrl", mPost.getPostImageUrl());
+        dbRef.updateChildren(postUpdates)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        mProgressDialog.dismiss();
+                        dismiss();
+                        Toast.makeText(getActivity(), "Company details Successfully updated", Toast.LENGTH_LONG).show();
+
+                    }
+                });
+    }
 
     private void selectImage() {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);

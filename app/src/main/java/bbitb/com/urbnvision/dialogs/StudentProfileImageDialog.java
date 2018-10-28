@@ -84,17 +84,21 @@ public class StudentProfileImageDialog extends DialogFragment implements View.On
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         //Student user = dataSnapshot.getValue(Student.class);
                         //final String userId = FirebaseUtils.getUid();
-
+                        FirebaseUser currentUser = firebaseAuth.getCurrentUser();
+                        String registeredUserID = currentUser.getUid();
                         if(mSelectedUri != null){
                             FirebaseStorage.getInstance().getReference(Constants.PROFILE_IMAGES)
+                                    .child(registeredUserID)
                                     .child(mSelectedUri.getLastPathSegment())
                                     .putFile(mSelectedUri)
                                     .addOnSuccessListener(getActivity(), new OnSuccessListener<UploadTask.TaskSnapshot>() {
                                         @Override
                                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                            String url = Constants.PROFILE_IMAGES + "/" + mSelectedUri.getLastPathSegment();
-                                            mStudent.setPhotoUrl(url);
-                                           addImageToUserProfile();
+                                            //String url = Constants.PROFILE_IMAGES + "/" + mSelectedUri.getLastPathSegment();
+                                            Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                                            //mStudent.setPhotoUrl(String.valueOf(downloadUrl));
+                                            String basicImage = String.valueOf(downloadUrl);
+                                           addImageToUserProfile(basicImage);
                                         }
                                     });
                         }
@@ -107,14 +111,14 @@ public class StudentProfileImageDialog extends DialogFragment implements View.On
                 });
     }
 
-    private void addImageToUserProfile() {
+    private void addImageToUserProfile(String image) {
         FirebaseUser currentUser = firebaseAuth.getCurrentUser();
         String registeredUserID = currentUser.getUid();
-        DatabaseReference studentDatabase = FirebaseDatabase.getInstance().getReference().child("Student").child(registeredUserID).child("profileImage");
+        DatabaseReference studentDatabase = FirebaseDatabase.getInstance().getReference().child("Student").child(registeredUserID).child("photoUrl");
 
 
         studentDatabase
-                .setValue(mStudent)
+                .setValue(image)
                 .addOnCompleteListener(getActivity(), new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {

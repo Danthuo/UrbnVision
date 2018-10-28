@@ -7,12 +7,14 @@ import android.os.Handler;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -73,6 +75,14 @@ public class StudentCompanyView extends AppCompatActivity {
             }
         });
 
+        locate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), StudentMapsActivity.class);
+                startActivity(intent);
+            }
+        });
+
         initCompany();
 
         constraintLayout1 = findViewById(R.id.constrain_layout_1);
@@ -92,7 +102,7 @@ public class StudentCompanyView extends AppCompatActivity {
 
         //this method used to get the width of view
         progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("Count Width Of View");
+        progressDialog.setMessage("Loading...");
         progressDialog.show();
         handler.postDelayed(new Runnable() {
             @Override
@@ -200,13 +210,13 @@ public class StudentCompanyView extends AppCompatActivity {
         int totalFourthStar = totalRateStar4 * 4;
         int totalFifthStar = totalRateStar5 * 5;
 
-        double sumBintang = totalFirstStar +
+        double totalStars = totalFirstStar +
                 totalSecondStar +
                 totalThirdStar +
                 totalFourthStar +
                 totalFifthStar;
 
-        double rating = (sumBintang / votersInDouble);
+        double rating = (totalStars / votersInDouble);
         DecimalFormat format = new DecimalFormat(".#");
 
         total_number_rating.setText(String.valueOf(format.format(rating)));
@@ -278,6 +288,16 @@ public class StudentCompanyView extends AppCompatActivity {
                         mAboutTextView.setText(about);
                     } catch (NullPointerException e) {
                     }
+
+                    try {
+                        image = dataSnapshot.child("image").getValue().toString();
+                        if (image != null && !image.equals("default")) {
+                            Glide.with(getApplicationContext()).load(image).into(mDisplayImageView);
+                        }else if(image != null){
+                            mDisplayImageView.setImageResource(R.drawable.ic_account);
+                        }
+
+                    }catch (NullPointerException e){ }
                 }
                 }
                 @Override
@@ -286,29 +306,15 @@ public class StudentCompanyView extends AppCompatActivity {
             }
                 });
 
-                /*mUserValueEventListener = new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        if (dataSnapshot.getValue() != null) {
-                            try {
-                                //Company company = dataSnapshot.getValue(Company.class);
-                                Glide.with(StudentCompanyView.this).load(mCompany.getImage()).into(mDisplayImageView);
+    }
 
-
-                            } catch (NullPointerException e) {
-                            }
-
-                            //mEmailTextView.setText(users.getEmail());
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                };*/
-
-
-
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event)
+    {
+        if ((keyCode == KeyEvent.KEYCODE_BACK))
+        {
+            finish();
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }

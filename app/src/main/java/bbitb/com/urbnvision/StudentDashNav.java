@@ -32,7 +32,7 @@ public class StudentDashNav extends Fragment{
     private FirebaseAuth firebaseAuth;
     private TextView username_text;
 
-    public ImageView more_image, locate_companies, userDisplayImageView;
+    public ImageView more_image, locate_companies, userDisplayImageView, editProfile;
 
     @Nullable
     @Override
@@ -45,6 +45,14 @@ public class StudentDashNav extends Fragment{
         View view = inflater.inflate(R.layout.fragment_dash, null);
         firebaseAuth = FirebaseAuth.getInstance();
         username_text = (TextView) view.findViewById(R.id.username);
+
+        editProfile = view.findViewById(R.id.editprofile_img);
+        editProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getContext(), StudentSettingsActivity.class));
+            }
+        });
 
         more_image = view.findViewById(R.id.more_image);
         locate_companies = view.findViewById(R.id.locatecompanies_image);
@@ -126,17 +134,17 @@ public class StudentDashNav extends Fragment{
         @Override
         public  boolean onMenuItemClick(MenuItem menuItem){
             switch (menuItem.getItemId()){
-                case R.id.action_edit_image:
+               /* case R.id.action_edit_image:
                     startActivity(new Intent(getContext(), StudentSettingsActivity.class));
-                    /*StudentProfileImageDialog dialog  = new StudentProfileImageDialog();
-                    dialog.show(getActivity().getFragmentManager(), null);*/
-                    return true;
+                    *//*StudentProfileImageDialog dialog  = new StudentProfileImageDialog();
+                    dialog.show(getActivity().getFragmentManager(), null);*//*
+                    return true;*/
                 case R.id.action_account_settings:
-                    Toast.makeText(getContext(), "Functionality has not been added", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(getContext(), StudentSettingsActivity.class));
                     return true;
-                case R.id.action_notification_subs:
+                /*case R.id.action_notification_subs:
                     Toast.makeText(getContext(), "Functionality yet to be added", Toast.LENGTH_SHORT).show();
-                    return true;
+                    return true;*/
                 default:
                     Toast.makeText(getContext(), "Functionality yet to be added", Toast.LENGTH_SHORT).show();
             }

@@ -1,5 +1,6 @@
 package bbitb.com.urbnvision;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -39,6 +40,7 @@ public class StudentNotifyNav extends Fragment {
     private View mRootView;
     private FirebaseRecyclerAdapter<Post, StudentNotifyNav.PostHolder> mPostAdapter;
     private RecyclerView mPostRecycleView;
+    private Activity mActivity;
 
 
     @Nullable
@@ -57,12 +59,14 @@ public class StudentNotifyNav extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+        mActivity = getActivity();
         mPostAdapter.startListening();
     }
 
     @Override
     public void onStop() {
         super.onStop();
+        mActivity = null;
         mPostAdapter.stopListening();
     }
 
@@ -117,8 +121,8 @@ public class StudentNotifyNav extends Fragment {
                         holder.setUsername(coUsername);
 
                         String coImage = dataSnapshot.child("image").getValue().toString();
-                        if (coImage != null &&  !coImage.equals("default")) {
-                            Glide.with(getContext()).load(coImage).into(holder.postOwnerDisplayImageView);
+                        if (coImage != null &&  !coImage.equals("default") && mActivity != null) {
+                            Glide.with(mActivity).load(coImage).into(holder.postOwnerDisplayImageView);
                         }else if(coImage != null){
                             holder.postOwnerDisplayImageView.setImageResource(R.drawable.ic_account);
                         }
@@ -141,11 +145,9 @@ public class StudentNotifyNav extends Fragment {
                 url_db.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        //Task<Uri> storageReference = FirebaseStorage.getInstance().getReference(model.getPostImageUrl()).getDownloadUrl();
-                        String url = dataSnapshot.getValue(String.class);
-                        //Log.e("ürl", url.toString());
-                        if (url != null) {
-                            Glide.with(getContext()).load(url).into(holder.postDisplayImageView);
+                       String url = dataSnapshot.getValue(String.class);
+                        if (url != null &&  !url.equals("default") && mActivity != null) {
+                            Glide.with(mActivity).load(url).into(holder.postDisplayImageView);
                         }
                     }
 

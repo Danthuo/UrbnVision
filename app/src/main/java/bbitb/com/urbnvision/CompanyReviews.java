@@ -124,7 +124,7 @@ public class CompanyReviews extends AppCompatActivity{
         mReviewsRecycleView.setAdapter(mReviewsAdapter);
         //this method used to get the width of view
         progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("Count Width Of View");
+        progressDialog.setMessage("Loading...");
         progressDialog.show();
         handler.postDelayed(
                 new Runnable() {
@@ -314,13 +314,13 @@ public class CompanyReviews extends AppCompatActivity{
         int totalFourthStar = totalRateStar4 * 4;
         int totalFifthStar = totalRateStar5 * 5;
 
-        double sumBintang = totalFirstStar +
+        double sumOfStars = totalFirstStar +
                 totalSecondStar +
                 totalThirdStar +
                 totalFourthStar +
                 totalFifthStar;
 
-        double rating = (sumBintang / votersInDouble);
+        double rating = (sumOfStars / votersInDouble);
         DecimalFormat format = new DecimalFormat(".#");
 
         total_number_rating.setText(String.valueOf(format.format(rating)));

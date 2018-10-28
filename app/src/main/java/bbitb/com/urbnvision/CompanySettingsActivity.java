@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -156,9 +157,9 @@ public class CompanySettingsActivity extends AppCompatActivity {
                     }catch (NullPointerException e){}
 
                     String coImage = dataSnapshot.child("image").getValue().toString();
-                    if (coImage != "default" && coImage != null) {
+                    if (coImage != null && !coImage.equals("default")) {
                         Glide.with(getApplicationContext()).load(coImage).into(userpicIv);
-                    }else{
+                    }else if(coImage != null){
                         userpicIv.setImageResource(R.drawable.ic_account);
                     }
 
@@ -279,5 +280,15 @@ public class CompanySettingsActivity extends AppCompatActivity {
                     }
                 });
 
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event)
+    {
+        if ((keyCode == KeyEvent.KEYCODE_BACK))
+        {
+            finish();
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }

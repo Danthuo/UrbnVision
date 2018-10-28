@@ -80,7 +80,7 @@ public class CompanyProfileImageDialog extends DialogFragment implements View.On
         mProgressDialog.show();
 
         FirebaseUser currentUser = firebaseAuth.getCurrentUser();
-        String registeredUserID = currentUser.getUid();
+        final String registeredUserID = currentUser.getUid();
         DatabaseReference jDatabase = FirebaseDatabase.getInstance().getReference().child("Company").child(registeredUserID);
 
         //FirebaseUtils.getUserRef(FirebaseUtils.getCurrentUser().getEmail().replace(".",","))
@@ -92,6 +92,7 @@ public class CompanyProfileImageDialog extends DialogFragment implements View.On
 
                         if(mSelectedUri != null){
                             FirebaseStorage.getInstance().getReference(Constants.PROFILE_IMAGES)
+                                    .child(registeredUserID)
                                     .child(mSelectedUri.getLastPathSegment())
                                     .putFile(mSelectedUri)
                                     .addOnSuccessListener(getActivity(), new OnSuccessListener<UploadTask.TaskSnapshot>() {

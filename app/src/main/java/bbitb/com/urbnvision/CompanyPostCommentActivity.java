@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -99,6 +100,13 @@ public class CompanyPostCommentActivity extends AppCompatActivity implements Vie
                         try{
                             holder.setUsername(dataSnapshot.child("username").getValue().toString());
                         }catch (NullPointerException e){}
+
+                        String userImage = dataSnapshot.child("photoUrl").getValue().toString();
+                        if (userImage != null &&  !userImage.equals("default")) {
+                            Glide.with(getApplicationContext()).load(userImage).into(holder.commentOwnerDisplay);
+                        }else if(userImage != null){
+                            holder.commentOwnerDisplay.setImageResource(R.drawable.ic_account);
+                        }
 
                     }
 
@@ -269,6 +277,8 @@ public class CompanyPostCommentActivity extends AppCompatActivity implements Vie
                                     public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
                                         progressDialog.dismiss();
                                         FirebaseUtils.addToMyRecord(Constants.COMMENTS_KEY, uid);
+                                        Toast.makeText(getApplicationContext(), "Comment Successfully Sent", Toast.LENGTH_LONG).show();
+                                        mCommentEditTextView.setText("");
                                     }
                                 });
                     }

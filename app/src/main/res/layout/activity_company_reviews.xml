@@ -38,7 +38,7 @@
                         android:gravity="center"
                         android:textSize="35sp"
                         android:textStyle="bold"
-                        tools:text="3.1" />
+                        android:text="0" />
 
                     <me.zhanghai.android.materialratingbar.MaterialRatingBar
                         android:id="@+id/total_star_rating"
@@ -48,7 +48,6 @@
                         android:layout_gravity="center"
                         android:layout_marginBottom="5dp"
                         android:layout_marginTop="5dp"
-                        android:isIndicator="true"
                         android:maxHeight="20dp"
                         android:minHeight="20dp"
                         android:numStars="5"
@@ -56,6 +55,7 @@
                         app:mrb_progressBackgroundTint="@color/colorPrimary"
                         app:mrb_progressTint="@color/colorPrimary"
                         app:mrb_secondaryProgressTint="@color/colorPrimary" />
+                    <!--android:isIndicator="true"-->
 
                     <TextView
                         android:id="@+id/tv_total_people_rated"
@@ -65,7 +65,7 @@
                         android:layout_marginLeft="-5dp"
                         android:drawableLeft="@drawable/ic_person_black_24dp"
                         android:gravity="center|left"
-                        tools:text="80 total" />
+                        android:text="0 total" />
                 </LinearLayout>
 
                 <LinearLayout

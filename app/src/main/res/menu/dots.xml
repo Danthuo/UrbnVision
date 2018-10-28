@@ -5,7 +5,7 @@
         android:id="@+id/settings"></item>
     <item android:title="logout"
         android:id="@+id/logout"></item>
-    <item android:title="Edit username"
-        android:id="@+id/changeUsername"></item>
+   <!-- <item android:title="Edit username"
+        android:id="@+id/changeUsername"></item>-->
 
 </menu>

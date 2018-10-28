@@ -112,12 +112,13 @@ public class PostCreateDialog extends DialogFragment implements View.OnClickList
 
                         if(mSelectedUri != null){
                             FirebaseStorage.getInstance().getReference(Constants.POST_IMAGES)
+                                    .child(postId)
                                     .child(mSelectedUri.getLastPathSegment())
                                     .putFile(mSelectedUri)
                                     .addOnSuccessListener(getActivity(), new OnSuccessListener<UploadTask.TaskSnapshot>() {
                                         @Override
                                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                            String url = Constants.POST_IMAGES + "/" + mSelectedUri.getLastPathSegment();
+                                            //String url = Constants.POST_IMAGES + "/" + mSelectedUri.getLastPathSegment();
                                             Uri downloadUrl = taskSnapshot.getDownloadUrl();
                                             mPost.setPostImageUrl(String.valueOf(downloadUrl));
                                             addToMyPostList(postId);

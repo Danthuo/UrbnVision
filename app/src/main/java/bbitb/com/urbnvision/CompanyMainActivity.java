@@ -1,7 +1,9 @@
 package bbitb.com.urbnvision;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Handler;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -54,6 +56,8 @@ public class CompanyMainActivity extends AppCompatActivity {
     private static TextView total_number_rating;
     private static MaterialRatingBar totalStarRating;
 
+    private ProgressDialog progressDialog;
+    private Handler handler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +90,15 @@ public class CompanyMainActivity extends AppCompatActivity {
     }
 
     private void initView() {
+
+        //this method used to get the width of view
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Loading...");
+        progressDialog.show();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                progressDialog.dismiss();
 
         String registeredUserID = mFirebaseUser.getUid();
         DatabaseReference ratingsRef = FirebaseDatabase.getInstance().getReference(Constants.COMPANY_KEY).child(registeredUserID);
@@ -120,6 +133,8 @@ public class CompanyMainActivity extends AppCompatActivity {
                 System.out.println("The read failed: " + databaseError.getCode());
             }
         });
+        }
+        }, 3000);
     }
 
     public static void setRatingByColor(Company companyModel) {
@@ -187,13 +202,13 @@ public class CompanyMainActivity extends AppCompatActivity {
         int totalFourthStar = totalRateStar4 * 4;
         int totalFifthStar = totalRateStar5 * 5;
 
-        double sumBintang = totalFirstStar +
+        double totalStars = totalFirstStar +
                 totalSecondStar +
                 totalThirdStar +
                 totalFourthStar +
                 totalFifthStar;
 
-        double rating = (sumBintang / votersInDouble);
+        double rating = (totalStars / votersInDouble);
         DecimalFormat format = new DecimalFormat(".#");
 
         total_number_rating.setText(String.valueOf(format.format(rating)));
@@ -266,12 +281,7 @@ public class CompanyMainActivity extends AppCompatActivity {
                         }else if(image != null){
                             mDisplayImageView.setImageResource(R.drawable.ic_account);
                         }
-                        /*if(image !=null){
-                            StorageReference storageReference = FirebaseStorage.getInstance().getReference(image);
-                            Glide.with(getApplicationContext())
-                                    .load(storageReference)
-                                    .into(mDisplayImageView);
-                        }*/
+
                     }catch (NullPointerException e){ }
 
                     //company.getUid();

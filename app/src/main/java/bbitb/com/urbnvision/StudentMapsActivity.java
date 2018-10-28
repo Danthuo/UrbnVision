@@ -437,6 +437,7 @@ public class StudentMapsActivity extends FragmentActivity implements
                                         .title(dataSnapshot.child("username").getValue().toString())
                                         .snippet(snippet);
                                 mMap.addMarker(options).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
+
                             }
                         }
 
@@ -481,6 +482,7 @@ public class StudentMapsActivity extends FragmentActivity implements
                 return infoWindow;
             }
         });
+
 
         // Prompt the user for permission.
         getLocationPermission();
@@ -561,7 +563,7 @@ public class StudentMapsActivity extends FragmentActivity implements
          * cases when a location is not available.
          */
         try {
-            if (true) {
+            if(true) {
                 /*if (mLocationPermissionGranted) {*/
                 final Task<Location> locationResult = mFusedLocationProviderClient.getLastLocation();
                 locationResult.addOnCompleteListener(this, new OnCompleteListener<Location>() {

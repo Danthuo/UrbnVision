@@ -70,8 +70,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private View mProgressView;
     private View mLoginFormView;
     private FirebaseAuth firebaseAuth;
-    private Button join;
-    private TextView reset_pass;
+    private Button join, learn;
+    private TextView reset_pass, co_intro;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,12 +104,25 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mLoginFormView = findViewById(R.id.email_login_form);
         mProgressView = findViewById(R.id.login_progress);
         join = findViewById(R.id.join_button);
+        learn =findViewById(R.id.learn_button);
+        co_intro = findViewById(R.id.company_intro);
         reset_pass = findViewById(R.id.forgot_password);
         join.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
                 startActivity(new Intent(getApplicationContext(), SignupActivity.class));
+            }
+        });
+        learn.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if( co_intro.getVisibility() == View.INVISIBLE){
+                    co_intro.setVisibility(View.VISIBLE);
+                }else if(co_intro.getVisibility() == View.VISIBLE){
+                    co_intro.setVisibility(View.INVISIBLE);
+                }
+
             }
         });
 

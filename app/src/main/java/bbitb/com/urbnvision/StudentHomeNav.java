@@ -1,5 +1,6 @@
 package bbitb.com.urbnvision;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
@@ -39,6 +40,7 @@ public class StudentHomeNav extends Fragment {
     private RecyclerView mCompanies;
     //private DatabaseReference mDatabase;
     private FirebaseRecyclerAdapter<Company, CompanyViewHolder> mCompaniesAdapter;
+    private Activity mActivity;
 
 
     @Nullable
@@ -79,8 +81,8 @@ public class StudentHomeNav extends Fragment {
                         holder.setDesc(bio);
 
                         String coImage = dataSnapshot.child("image").getValue().toString();
-                        if (coImage != null &&  !coImage.equals("default") ) {
-                            Glide.with(getContext()).load(coImage).into(holder.companyDisplayImageView);
+                        if (coImage != null &&  !coImage.equals("default") && mActivity != null) {
+                            Glide.with(mActivity).load(coImage).into(holder.companyDisplayImageView);
                         }else if(coImage != null){
                             holder.companyDisplayImageView.setImageResource(R.drawable.ic_account);
                         }
@@ -164,12 +166,14 @@ public class StudentHomeNav extends Fragment {
     @Override
     public void onStart(){
         super.onStart();
+        mActivity = getActivity();
         mCompaniesAdapter.startListening();
     }
 
     @Override
     public void onStop(){
         super.onStop();
+        mActivity = null;
         mCompaniesAdapter.stopListening();
     }
 
